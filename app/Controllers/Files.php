@@ -42,7 +42,7 @@ class Files extends BaseController {
         // 获取当前目录中的文件
         $FileList = $filelistModel->GetFileDataByParent($path); 
 
-        print_r($path);
+        // print_r($path);
 
         // 列表导航
         $navs = explode("/",$path);

@@ -230,22 +230,9 @@ class filelistModel extends \CodeIgniter\Model
 
     // 获取文件下载地址
     public function GetFileDownloadUrl($file){
-        // $name = substr(strrchr($file, '/'), 1);         // 文件或文件夹名
-        // $file_parent = str_replace($name, "", $file);   // 父级目录
-        // $fileData = $this->asArray()->where([
-        //     'file_parent' => $file_parent,
-        //     'file_name' => $name
-        // ])->first();
-        // if(!empty($fileData['file_downloadUrl'])){
-        //     // 如果存在则直接返回已存在的地址
-        //     return $fileData['file_downloadUrl'];
-        // }
-        // $item = oneindex::file($file);
-        // $downloadUrl = !empty($item['downloadUrl'])?$item['downloadUrl']:"";
-        // return $downloadUrl;
-        // 非常遗憾 下载地址过期太快无法储存到缓存
-        // ==================================================
-
+        // 虽然有缓存下载地址
+        // 但通过下载地址下载文件也会调用API
+        // 导致依然会出现调用频繁的问题
         $downloadurlModel = new downloadurlModel();
         $fileData = $downloadurlModel->GetDataForPath($file);
 

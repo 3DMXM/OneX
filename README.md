@@ -1,56 +1,35 @@
-# CodeIgniter 4 Framework
+# OneX
 
-## What is CodeIgniter?
+演示地址：https://game.aoe.top/
 
-CodeIgniter is a PHP full-stack web framework that is light, fast, flexible and secure.
-More information can be found at the [official site](http://codeigniter.com).
+该项目是基于oneindex使用CodeIgniter4 进行开发
 
-This repository holds the distributable version of the framework,
-including the user guide. It has been built from the
-[development repository](https://github.com/codeigniter4/CodeIgniter4).
+使用onedrive来搭建自己的网盘
 
-More information about the plans for version 4 can be found in [the announcement](http://forum.codeigniter.com/thread-62615.html) on the forums.
+项目还在完善中
 
-The user guide corresponding to this version of the framework can be found
-[here](https://codeigniter4.github.io/userguide/).
+适用于访问量大，导致API被限制时使用
+
+### 优点：
+- 将API相关缓存到数据库
+- 不会出现目录空白的情况
+- 显示REDAME.md文档
+- 下载不会走服务器流量
+- 框架自带缓存，节约PHP流量
+
+### 缺点
+- 除了下载其他都会走
+- 无法在线游览文档、图片、视频
+- 访问量大会对服务器和数据库造成压力
+- 功能不多
+- 只有一个皮肤
+- 还没写后台页面
+- 无法在线编辑文件
+- 无法上传文件
+- 文件排序比较随机
+- 缺点多于优点
 
 
-## Important Change with index.php
 
-`index.php` is no longer in the root of the project! It has been moved inside the *public* folder,
-for better security and separation of components.
 
-This means that you should configure your web server to "point" to your project's *public* folder, and
-not to the project root. A better practice would be to configure a virtual host to point there. A poor practice would be to point your web server to the project root and expect to enter *public/...*, as the rest of your logic and the
-framework are exposed.
-
-**Please** read the user guide for a better explanation of how CI4 works!
-
-## Repository Management
-
-We use Github issues, in our main repository, to track **BUGS** and to track approved **DEVELOPMENT** work packages.
-We use our [forum](http://forum.codeigniter.com) to provide SUPPORT and to discuss
-FEATURE REQUESTS.
-
-This repository is a "distribution" one, built by our release preparation script.
-Problems with it can be raised on our forum, or as issues in the main repository.
-
-## Contributing
-
-We welcome contributions from the community.
-
-Please read the [*Contributing to CodeIgniter*](https://github.com/codeigniter4/CodeIgniter4/blob/develop/CONTRIBUTING.md) section in the development repository.
-
-## Server Requirements
-
-PHP version 7.3 or higher is required, with the following extensions installed:
-
-- [intl](http://php.net/manual/en/intl.requirements.php)
-- [libcurl](http://php.net/manual/en/curl.requirements.php) if you plan to use the HTTP\CURLRequest library
-
-Additionally, make sure that the following extensions are enabled in your PHP:
-
-- json (enabled by default - don't turn it off)
-- [mbstring](http://php.net/manual/en/mbstring.installation.php)
-- [mysqlnd](http://php.net/manual/en/mysqlnd.install.php)
-- xml (enabled by default - don't turn it off)
+此项目开源，欢迎有能力的大佬参与开发
