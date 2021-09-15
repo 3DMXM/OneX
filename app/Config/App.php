@@ -23,7 +23,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://oneindex.pro/';
+    public $baseURL = 'http://onex.pro/';
 
     /**
      * --------------------------------------------------------------------------

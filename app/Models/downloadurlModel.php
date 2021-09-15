@@ -28,7 +28,7 @@ class downloadurlModel extends \CodeIgniter\Model
     public function SetData($path = "", $data = array())
     {
         $db = db_connect();
-        $builder = $db->table('file_data');
+        $builder = $db->table('downloadurl');
         $builder->where([
            'file_path' => $path 
         ]);

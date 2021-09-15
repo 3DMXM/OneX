@@ -241,13 +241,20 @@ class filelistModel extends \CodeIgniter\Model
             if($this->CheckingTime($fileData['file_up_time'])){
                 // 如果缓存过期 重新获取
                 $downloadUrl = oneindex::download_url($file);
-                $data = array(
-                    'file_download_url' => $downloadUrl,
-                    'file_up_time' => new Time('now','Asia/Shanghai')
-                );
-                $downloadurlModel->SetData($file, $data);
-
-                return $downloadUrl;
+                if(!empty($downloadUrl)){
+                    // 如果获取成功
+                    $data = array(
+                        'file_download_url' => $downloadUrl,
+                        'file_up_time' => new Time('now','Asia/Shanghai')
+                    );
+                    $downloadurlModel->SetData($file, $data);
+                   
+                    return $downloadUrl;
+                }else{
+                    // 如果获取失败
+                    // 返回旧的地址
+                    return $fileData['file_download_url'];
+                }                
             }
             // 如果没过期 则直接返回缓存
             return $fileData['file_download_url'];

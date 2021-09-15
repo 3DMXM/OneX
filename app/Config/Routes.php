@@ -24,9 +24,10 @@ $routes->setDefaultController('Files/view');
 // $routes->add('/', 'Home::index');
 // $routes->add('Files/(:any)', 'Files::view/$1');
 
-
-$routes->group('admin', function($routes)
+// 后台管理
+$routes->group('~admin', function($routes)
 {
+    $routes->add("index", "Admin::index");
     $routes->add("Files/ShowFileList", "Files::ShowFileList");
     $routes->add("Api/GetAllFile","Api::GetAllFile");
 });

@@ -9,7 +9,7 @@ use App\ThirdParty\onedrive;
 class Files extends BaseController {
 
     public function view()
-    {        
+    {
         // $this->cachePage(600);
 
         // 引用文件相关类

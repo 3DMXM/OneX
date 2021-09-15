@@ -2,7 +2,7 @@
     "name": "codeigniter4/framework",
     "type": "project",
     "description": "The CodeIgniter framework v4",
-    "homepage": "http://oneindex.pro/",
+    "homepage": "http://onex.pro/",
     "license": "MIT",
     "require": {
         "php": "^7.3 || ^8.0",
