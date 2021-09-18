@@ -1,0 +1,76 @@
+.mdui-appbar {
+    .mdui-toolbar {
+        height: 56px;
+        font-size: 16px;
+        *{
+            padding: 0 6px;
+            margin: 0 2px;
+            opacity:0.5;
+        }
+        .mdui-typo-headline{
+            padding: 0 16px 0 0;
+        }
+        i{
+            padding: 0;
+        }
+        a:last-child{
+            opacity:1;
+        }
+    }
+    .mdui-toolbar>a:hover,a.mdui-typo-headline,a.active{
+        opacity:1;
+    }
+}
+
+
+
+.mdui-container{
+    max-width:880px;
+}
+.mdui-list-item{
+    -webkit-transition:none;
+    transition:none;
+    margin: 2px 0;
+    padding:0;
+    a{
+        width:100%;
+        line-height: 48px
+    }
+}
+.mdui-list>.th{
+    background-color:initial;
+}
+@media screen and (max-width:980px){
+    .mdui-list-item {
+        .mdui-text-right {
+            display: none;
+        }
+    }
+    .mdui-container{
+        width:100% !important;
+        margin:0;
+    }
+    .mdui-toolbar>*{
+        display: none;
+    }
+    .mdui-toolbar>a:last-child,.mdui-toolbar>.mdui-typo-headline,.mdui-toolbar>i:first-child{
+        display: block;
+    }
+}
+
+// 左侧导航栏
+.mdui-drawer{
+    top: 64px;
+
+    .mdui-list .mdui-list-item{
+        padding: 0 16px;
+    }
+}
+
+// 主体内容
+.mdui-container{
+    .mdui-container-fluid{
+        //padding-top: 30px;
+
+    }
+}

@@ -21,11 +21,11 @@ function GetAllFile($path = "/Games"){
 
 
 array_shift($argv);
-// if($argc==0)
-// 	  echo "here is no args";
-//   else
-// 	  echo $argc;
+if($argc==0)
+	  echo "here is no args";
+  else
+	  echo $argc;
   
-//   print_r($argv);
+  print_r($argv);
 
 GetAllFile();

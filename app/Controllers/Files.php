@@ -59,6 +59,7 @@ class Files extends BaseController {
         }
                
         $data = [
+            'path' => $path,
             'files' => $FileList,
             'title' => $title,
             'site_info' => $site_info,

@@ -16,11 +16,24 @@ function file_ico($item){
         return "audiotrack";
     }
     return "insert_drive_file";
-  }
+}
+function get_absolute_path($path) {
+    $path = str_replace(array('/', '\\', '//'), '/', $path);
+    $parts = array_filter(explode('/', $path), 'strlen');
+    $absolutes = array();
+    foreach ($parts as $part) {
+        if ('.' == $part) continue;
+        if ('..' == $part) {
+            array_pop($absolutes);
+        } else {
+            $absolutes[] = $part;
+        }
+    }
+    return str_replace('//','/','/'.implode('/', $absolutes).'/');
+}
 ?>
 
 <div class="mdui-container">
-    <div class="mdui-container-fluid">
     <div class="mdui-toolbar nexmoe-item">
         <a href="/"><?=$site_info['site_name'] ?></a>
         <?php 
@@ -38,7 +51,6 @@ function file_ico($item){
         <?php endforeach;?>
         <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>-->
     </div>
-    </div>
     
     <!-- 文件列表 -->
     <div class="nexmoe-item">
@@ -52,9 +64,14 @@ function file_ico($item){
                 
 
                 </li>
-                <?php //if($path != '/'):?>
-                <!-- <li class="mdui-list-item mdui-ripple">
-                    <a href="<?php //echo get_absolute_path($root.$path.'../');?>">
+                <?php if($path != '/'):
+                    $parent = explode("/", $path);
+                    $parent = array_filter($parent);
+                    array_pop($parent);
+                    $parent = implode("/", $parent);
+                    ?>
+                <li class="mdui-list-item mdui-ripple">
+                    <a href="/<?= $parent ?>">
                     <div class="mdui-col-xs-12 mdui-col-sm-7">
                         <i class="mdui-icon material-icons">arrow_upward</i>
                         ..
@@ -62,8 +79,8 @@ function file_ico($item){
                     <div class="mdui-col-sm-3 mdui-text-right"></div>
                     <div class="mdui-col-sm-2 mdui-text-right"></div>
                     </a>
-                </li> -->
-                <?php //endif;?>
+                </li> 
+                <?php endif;?>
                 
                 <?php 
                 foreach((array)$files as $item):

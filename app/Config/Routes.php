@@ -14,22 +14,29 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php')) {
 /*
  * --------------------------------------------------------------------
  * Router Setup
+ * 路由配置
  * --------------------------------------------------------------------
  */
 $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultMethod('index');
 
 $routes->setDefaultController('Files/view');
-// $routes->add('Pages/(:any)', 'Pages::view/$1');
-// $routes->add('/', 'Home::index');
-// $routes->add('Files/(:any)', 'Files::view/$1');
+
 
 // 后台管理
 $routes->group('~admin', function($routes)
 {
-    $routes->add("index", "Admin::index");
+//    $routes->add("index", "Admin::index");
+
+    $routes->add("login","Admin::login");
+
     $routes->add("Files/ShowFileList", "Files::ShowFileList");
-    $routes->add("Api/GetAllFile","Api::GetAllFile");
+    
+    $routes->group("/Api",function($routes){
+        $routes->add("GetAllFile","Api::GetAllFile");
+    });
+
+    $routes->add("(:any)","Admin::index/$1");
 });
 
 

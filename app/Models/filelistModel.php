@@ -36,7 +36,7 @@ class filelistModel extends \CodeIgniter\Model
         }else{
             // 如果有，检查是否过期
             if($this->CheckingTime($FileList[0]['file_up_time'])){
-                echo "过期，尝试重新获取";
+//                echo "过期，尝试重新获取";
                 // 如果过期则重新获取
                 $newList = onedrive::dir($path);
                 if(!empty($newList)){
@@ -50,12 +50,14 @@ class filelistModel extends \CodeIgniter\Model
 
                     $this->AddFileDataList($newList, $path);
                 }else{
-                    print_r($newList);
+//                    print_r($newList);
                 }
             }
         }
        
-        return $this->asArray()->where(['file_parent' => $path])->orderBy('file_type','DESC')->distinct('file_name')->findAll();
+        return $this->asArray()->where(['file_parent' => $path])
+            ->orderBy('file_type','DESC')->orderBy('file_name','ASC')
+            ->distinct('file_name')->findAll();
     }
 
     // 获取标题目录标题
@@ -240,6 +242,7 @@ class filelistModel extends \CodeIgniter\Model
             // 如果有缓存
             if($this->CheckingTime($fileData['file_up_time'])){
                 // 如果缓存过期 重新获取
+                // 注：OneDrive的下载地址过期时间为1小时，
                 $downloadUrl = oneindex::download_url($file);
                 if(!empty($downloadUrl)){
                     // 如果获取成功
