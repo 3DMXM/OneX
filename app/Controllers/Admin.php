@@ -43,18 +43,30 @@ class Admin extends BaseController{
                 if(!empty($site_name) && !empty($onedrive_root) && !empty($cache_expire_time)){
                     // 如果都不为空
                     // 更新数据
-                    $data = array(
+                    $updata = array(
                         'site_name' => $site_name,
                         'onedrive_root' => $onedrive_root,
                         'cache_expire_time' => $cache_expire_time
                     );
-                    $site_infoModel->SetSiteInfo(1,$data);
+                    $site_infoModel->SetSiteInfo(1,$updata);
                     $data['msg'] = "保存成功";
                 }
                 break;
 
             case 'cache':
                 // 目录缓存
+                $filelistModel = new filelistModel();
+                $parent = $this->request->getPost("parent");
+                if(!empty($parent)){
+                    // 如果目录不为空
+                    // 更新指定目录的缓存                   
+                    $CacheType = $filelistModel->CacheList($parent);
+                    if($CacheType){
+                        $data['msg'] = "缓存更新成功";
+                    }else{
+                        $data['msg'] = "缓存更新失败";
+                    }
+                }
 
 
                 break;
@@ -63,7 +75,7 @@ class Admin extends BaseController{
 
                 break;
         }
-
+        
 
         // 渲染页面
         echo view("/Admin/base/header.php",$data);

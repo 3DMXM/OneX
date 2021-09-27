@@ -24,7 +24,7 @@
 
 
 <script>
-    <?php if(empty(!$msg)): ?>
+    <?php if(!empty($msg)): ?>
         // 弹出消息
         mdui.snackbar({position: 'right-top', message: '<?=$msg ?>'});
     <?php endif; ?>

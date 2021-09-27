@@ -30,6 +30,19 @@
 - 缺点多于优点
 
 
-
+### 伪静态
+nginx
+```
+try_files $uri $uri/ /index.php/$args;
+```
+Apache 
+```
+RewriteEngine on
+# 如果请求的是真实存在的文件或目录，直接访问
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# 如果请求的不是真实文件或目录，分发请求至 index.php
+RewriteRule . index.php
+```
 
 此项目开源，欢迎有能力的大佬参与开发

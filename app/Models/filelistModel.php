@@ -330,4 +330,29 @@ class filelistModel extends \CodeIgniter\Model
         // echo "{$nowTime}\n{$time}\n{$t0}";
     }
 
+    // 获取缓存目录列表
+    public function CacheList($parent){
+        // file_parent
+        $newList = onedrive::dir($path);
+
+        if(!empty($newList)){
+            // 获取成功
+            // 删除旧数据
+            $db = db_connect();
+            $builder = $db->table('filelist');
+            $builder->where(['file_parent'=> $path]);
+            $builder->delete();
+            $db->close();
+
+            $this->AddFileDataList($newList, $path);
+
+            return true;
+        }else{
+            // 获取失败
+            return false;
+        }
+
+        
+    }
+
 }
