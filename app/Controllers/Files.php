@@ -2,9 +2,7 @@
 
 namespace App\Controllers;
 use App\Models\filelistModel;
-use App\Models\tokenModel;
 use App\Models\site_infoModel;
-use App\ThirdParty\onedrive;
 
 class Files extends BaseController {
 
@@ -27,7 +25,7 @@ class Files extends BaseController {
             $path = rawurldecode($path);
             $path = "/{$path}";
             // 获取标题
-            $title = $filelistModel->GetFileTitle($path);  
+            $SEO = $filelistModel->GetFileTitle($path);
             if(!$filelistModel->CheckingFolder($path)){
                 // 如果不是文件夹 而是文件
                 // 直接下载文件去
@@ -36,7 +34,7 @@ class Files extends BaseController {
             }
             $path .= "/";
         }else{
-            $title = $filelistModel->GetFileTitle($path);
+            $SEO = $filelistModel->GetFileTitle($path);
         }
         $path = str_replace("//", "/", $path);
         // 获取当前目录中的文件
@@ -61,7 +59,7 @@ class Files extends BaseController {
         $data = [
             'path' => $path,
             'files' => $FileList,
-            'title' => $title,
+            'SEO' => $SEO,
             'site_info' => $site_info,
             'navs' => $navs,
             'readme' => $readme 

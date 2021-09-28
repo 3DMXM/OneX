@@ -73,4 +73,21 @@ class userModel extends \CodeIgniter\Model
             return false;
         }
     }
+
+    /**
+     * 更新用户密码
+     * @param $id
+     * @param $psd
+     */
+    static function UpUserPassword($id, $psd){
+        $db = db_connect();
+        $builder = $db->table('user');
+        $builder->where('id',$id);
+        $builder->set("user_password",$psd);
+        $builder->update();
+        $db->close();
+    }
+
+
+
 }

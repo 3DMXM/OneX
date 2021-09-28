@@ -3,11 +3,14 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1.0, user-scalable=no"/>
-	<title><?= $title; ?></title>
+<!--	<title>--><?//= $title; ?><!--</title>-->
+    <meta name="keywords" content="<?= $SEO['seo_keywords'] ?>">
+    <meta name="description" content="<?= $SEO['seo_description'] ?>">
+    <title><?= $SEO['seo_title'] ?></title>
 	<link rel="icon" href="/favicon.ico" type="image/x-icon" />
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css">
 	<link rel="stylesheet" href="/styles/css/style.css">
-	<script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
 	<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>

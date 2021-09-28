@@ -23,7 +23,7 @@ class App extends BaseConfig
      *
      * @var string
      */
-    public $baseURL = 'http://onex.pro/';
+    public $baseURL = 'https://onex.aoe.top/';
 
     /**
      * --------------------------------------------------------------------------

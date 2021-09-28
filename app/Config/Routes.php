@@ -27,17 +27,25 @@ $routes->setDefaultController('Files/view');
 $routes->group('~admin', function($routes)
 {
 //    $routes->add("index", "Admin::index");
-
+    // /~admin/login
     $routes->add("login","Admin::login");
 
     $routes->add("Files/ShowFileList", "Files::ShowFileList");
     
-    $routes->group("/Api",function($routes){
-        $routes->add("GetAllFile","Api::GetAllFile");
+//    $routes->group("/Api",function($routes){
+//        $routes->add("GetAllFile","Api::GetAllFile");
+//    });
+
+    $routes->group("/SEO",function ($routes){
+        $routes->add("/AddSEO", "SEO::AddSEO");
     });
 
     $routes->add("(:any)","Admin::index/$1");
 });
+
+$routes->add('/Api/GetAllFile','Api::GetAllFile');
+$routes->add('/~SEO/AddSEO','SEO::AddSEO');
+$routes->add('/~SEO/GetSEO','SEO::GetSEO');
 
 
 $routes->add('/(:any)', 'Files::view');

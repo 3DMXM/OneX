@@ -1,6 +1,9 @@
 
 <!-- 左侧导航栏 -->
-<div class="mdui-drawer" id="main-drawer">
+<!--<div class="mc-drawer mdui-drawer">-->
+<!--    -->
+<!--</div>-->
+<div class="mc-drawer mdui-drawer" id="main-drawer">
     <div class="mdui-list">
         <a class="mdui-list-item" href="/~admin/index">
             <i class="mdui-list-item-icon mdui-icon material-icons"></i>
@@ -18,7 +21,7 @@
     </div>
 </div>
 <!--主体内容-->
-<div class="mdui-container">
+<div class="mdui-container-fluid doc-container">
     <?php echo view("/Admin/{$page}"); ?>
 </div>
 

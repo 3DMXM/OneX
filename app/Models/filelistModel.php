@@ -64,20 +64,32 @@ class filelistModel extends \CodeIgniter\Model
     public function GetFileTitle($path){
         $site_infoModel = new site_infoModel();
         $site_info = $site_infoModel->GetSiteInfo(1);
-        if($path == "/"){            
-            return $site_info['site_name'];
+//        if($path == "/"){
+//            return $site_info['site_name'];
+//        }
+//        $path = $site_info['onedrive_root'].$path;  // 如 /GTA5 则是 /Games/GTA5
+//
+//        $name = substr(strrchr($path, '/'), 1);         // 文件或文件夹名
+//        $file_parent = str_replace($name, "", $path);   // 父级目录
+//
+//        $data = $this->asArray()->where([
+//            'file_parent' => $file_parent,
+//            'file_name' => $name
+//        ])->first();
+        $SEO = seoModel::GetSEO($path);
+
+        if (!empty($SEO)){
+            seoModel::AddSEOClickCnt($path);    // 如果有,添加一次访问量
         }
-        $path = $site_info['onedrive_root'].$path;  // 如 /GTA5 则是 /Games/GTA5
 
-        $name = substr(strrchr($path, '/'), 1);         // 文件或文件夹名
-        $file_parent = str_replace($name, "", $path);   // 父级目录
 
-        $data = $this->asArray()->where([
-            'file_parent' => $file_parent,
-            'file_name' => $name
-        ])->first();
+        $SEO['seo_title'] = !empty($SEO['seo_title'])?"{$SEO['seo_title']} - {$site_info['site_name']}":"{$path} - {$site_info['site_name']}";
+        $SEO['seo_keywords'] = empty($SEO['seo_keywords']) ?"":$SEO['seo_keywords'];
+        $SEO['seo_description'] = empty($SEO['seo_description']) ?"":$SEO['seo_description'];
 
-        return !empty($data['file_title'])?"{$data['file_title']} - {$site_info['site_name']}":"{$path} - {$site_info['site_name']}";
+        return $SEO;
+
+//        return !empty($data['file_title'])?"{$data['file_title']} - {$site_info['site_name']}":"{$path} - {$site_info['site_name']}";
 
     }
 
@@ -333,18 +345,18 @@ class filelistModel extends \CodeIgniter\Model
     // 获取缓存目录列表
     public function CacheList($parent){
         // file_parent
-        $newList = onedrive::dir($path);
+        $newList = onedrive::dir($parent);
 
         if(!empty($newList)){
             // 获取成功
             // 删除旧数据
             $db = db_connect();
             $builder = $db->table('filelist');
-            $builder->where(['file_parent'=> $path]);
+            $builder->where(['file_parent'=> $parent]);
             $builder->delete();
             $db->close();
 
-            $this->AddFileDataList($newList, $path);
+            $this->AddFileDataList($newList, $parent);
 
             return true;
         }else{

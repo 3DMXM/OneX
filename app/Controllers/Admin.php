@@ -1,6 +1,7 @@
 <?php
 namespace App\Controllers;
 use App\Models\filelistModel;
+use App\Models\seoModel;
 use App\Models\tokenModel;
 use App\Models\site_infoModel;
 use App\Models\userModel;
@@ -35,28 +36,37 @@ class Admin extends BaseController{
 
         switch ($page){
             case 'install':
-                $data['site_info'] = $site_infoModel->GetSiteInfo(1);
                 // 基础设置
                 $site_name = $this->request->getPost("site_name");
                 $onedrive_root = $this->request->getPost("onedrive_root");
                 $cache_expire_time = $this->request->getPost("cache_expire_time");
+                $password = $this->request->getPost('password');
                 if(!empty($site_name) && !empty($onedrive_root) && !empty($cache_expire_time)){
                     // 如果都不为空
                     // 更新数据
                     $updata = array(
                         'site_name' => $site_name,
                         'onedrive_root' => $onedrive_root,
-                        'cache_expire_time' => $cache_expire_time
+                        'cache_expire_time' => $cache_expire_time,
                     );
+                    if(!empty($password)){
+                        $password = MD5(MD5($password));
+
+                        $nowUser = userModel::CheckingLogin();
+                        userModel::UpUserPassword($nowUser['id'], $password);
+
+                    }
                     $site_infoModel->SetSiteInfo(1,$updata);
                     $data['msg'] = "保存成功";
                 }
+                $data['site_info'] = $site_infoModel->GetSiteInfo(1);
+
                 break;
 
             case 'cache':
                 // 目录缓存
                 $filelistModel = new filelistModel();
-                $parent = $this->request->getPost("parent");
+                $parent = $this->request->getPost("cache_path");
                 if(!empty($parent)){
                     // 如果目录不为空
                     // 更新指定目录的缓存                   
@@ -72,6 +82,8 @@ class Admin extends BaseController{
                 break;
             case 'SEO':
                 // 路径SEO
+                $seoModel = new seoModel();
+                $data['list'] = $seoModel->GetSEO();
 
                 break;
         }
