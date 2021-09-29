@@ -1,3 +1,4 @@
+    </div>
     <!--底部-->
     <div class="fotter">
 	    <p>小莫网盘 @2020-<?=date("Y") ?> 如果网盘中有包含侵犯您权利的内容，请联系邮箱xm@xmsky.onmicrosoft.com</p>

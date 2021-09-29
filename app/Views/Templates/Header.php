@@ -11,10 +11,6 @@
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/css/mdui.min.css">
 	<link rel="stylesheet" href="/styles/css/style.css">
 	<script src="https://cdn.jsdelivr.net/npm/mdui@1.0.1/dist/js/mdui.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css">
-	<script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
-	<script async custom-element="amp-auto-ads" src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js"></script>
 </head>
 <body class="mdui-theme-primary-blue-grey mdui-theme-accent-blue">
 	<header class="nav">
@@ -27,4 +23,22 @@
 			</div>
 		</div>
 	</header>
+    <div class="mdui-container">
+        <div class="mdui-toolbar nexmoe-item">
+            <a href="/"><?=$site_info['site_name'] ?></a>
+            <?php
+            $navsPath = "/";
+            foreach((array)$navs as $val):
+                if($navsPath == "/") {
+                    $navsPath = "{$navsPath}{$val}";
+                }else{
+                    $navsPath = "{$navsPath}/{$val}";
+                }
+                ?>
+                <i class="mdui-icon material-icons mdui-icon-dark" style="margin:0;">chevron_right</i>
+                <a href="<?=$navsPath?>"><?=$val?></a>
+
+            <?php endforeach;?>
+            <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>-->
+        </div>
         <!-- 头部 -->

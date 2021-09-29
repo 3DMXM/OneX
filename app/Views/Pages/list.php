@@ -33,25 +33,6 @@ function get_absolute_path($path) {
 }
 ?>
 
-<div class="mdui-container">
-    <div class="mdui-toolbar nexmoe-item">
-        <a href="/"><?=$site_info['site_name'] ?></a>
-        <?php 
-            $navsPath = "/";
-            foreach((array)$navs as $val):
-                if($navsPath == "/") {
-                    $navsPath = "{$navsPath}{$val}";
-                }else{
-                    $navsPath = "{$navsPath}/{$val}";
-                }
-        ?>            
-        <i class="mdui-icon material-icons mdui-icon-dark" style="margin:0;">chevron_right</i>
-        <a href="<?=$navsPath?>"><?=$val?></a>
-
-        <?php endforeach;?>
-        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">refresh</i></a>-->
-    </div>
-    
     <!-- 文件列表 -->
     <div class="nexmoe-item">
         <div class="mdui-row">
@@ -84,7 +65,9 @@ function get_absolute_path($path) {
                 
                 <?php 
                 foreach((array)$files as $item):
-                    $file_parent = substr($item['file_parent'], 6);
+                    $root = $site_info['onedrive_root'];
+                    $file_parent = substr($item['file_parent'], strlen($root));
+
                     ?>
                     <?php if($item['file_type'] == "folder"):?>
 
@@ -159,6 +142,35 @@ function get_absolute_path($path) {
             $("#show_readme a").attr("target", "_blank");
         </script>
     <?php endif; ?>
+    <?php if ($audio): ?>
+    <link rel="stylesheet" href="https://code.aoe.top/libs/APlayer/dist/APlayer.min.css">
+    <div class="nexmoe-item">
+        <div class="mdui-chip">
+            <span class="mdui-chip-icon"><i class="mdui-icon material-icons">music_note</i></span>
+            <span class="mdui-chip-title">音乐盒</span>
+        </div>
+        <div class="mdui-typo" style="padding: 20px;">
+            <div id="aplayer"></div>
+        </div>
+    </div>
+    <script src="https://code.aoe.top/libs/APlayer/dist/APlayer.min.js"></script>
+
+    <script>
+        const ap = new APlayer({
+            container: document.getElementById('aplayer'),
+            audio: [
+                <?php foreach ($audio as $val): ?>
+                {
+                    name: '<?=$val['file_name']?>',
+                    url: '<?=$val['file_downloadUrl'] ?>',
+                },
+                <?php endforeach; ?>
+            ]
+        });
+
+    </script>
+
+    <?php endif; ?>
     
-</div>
+
 

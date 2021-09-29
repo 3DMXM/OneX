@@ -3,6 +3,8 @@
 namespace App\Controllers;
 use App\Models\filelistModel;
 use App\Models\site_infoModel;
+use App\ThirdParty\onedrive;
+use CodeIgniter\Model;
 
 class Files extends BaseController {
 
@@ -17,7 +19,9 @@ class Files extends BaseController {
 
         // 站点属性
         $site_infoModel = new site_infoModel();
-        $site_info = $site_infoModel->GetSiteInfo(1);  
+        $site_info = $site_infoModel->GetSiteInfo(1);
+
+        $type = 'other';
 
         if($path != "/"){
             // "%20" => " "
@@ -26,16 +30,20 @@ class Files extends BaseController {
             $path = "/{$path}";
             // 获取标题
             $SEO = $filelistModel->GetFileTitle($path);
-            if(!$filelistModel->CheckingFolder($path)){
-                // 如果不是文件夹 而是文件
-                // 直接下载文件去
-                $this->DownloadFile($path);
-                return false;
-            }
+            $type = $filelistModel->CheckingFolder($path);
             $path .= "/";
         }else{
             $SEO = $filelistModel->GetFileTitle($path);
+            $type = 'folder';
         }
+
+        // 如果有下载指令
+        if ($d = $this->request->getGet('d') == 'true'){
+            $this->DownloadFile($path);
+            return;
+        }
+
+
         $path = str_replace("//", "/", $path);
         // 获取当前目录中的文件
         $FileList = $filelistModel->GetFileDataByParent($path); 
@@ -49,10 +57,14 @@ class Files extends BaseController {
 
         // readme
         $readme  = false;
+        $audio = false;
         foreach($FileList as $i=>$val){
             if(in_array("README.md",$val)){
                 $readme = $filelistModel->GetFileContent($val);
                 unset($FileList[$i]);
+            }
+            if (site_infoModel::GetFileType($val['file_type']) == 'audio'){
+                $audio[] = $val;
             }
         }
                
@@ -62,12 +74,43 @@ class Files extends BaseController {
             'SEO' => $SEO,
             'site_info' => $site_info,
             'navs' => $navs,
-            'readme' => $readme 
+            'readme' => $readme,
+            'audio' => $audio,
         ];
 
         echo view('Templates/Header', $data);
 
-        echo view('Pages/list', $data);
+        $path = substr($path, 0, -1);
+        switch ($type){
+            case "folder": echo view('Pages/list', $data); break;
+            case "image":
+                $data['imgUrl'] = $filelistModel->GetFileDownloadUrl($path, false);
+                echo view('Pages/show/image', $data);
+                break;
+
+            case "video":
+                $site_info = site_infoModel::GetSiteInfo(1);
+
+                $data['thumb'] = onedrive::thumbnail($site_info['onedrive_root'].$path);
+                $data['url'] = $filelistModel->GetFileDownloadUrl($path, false);
+                echo view('Pages/show/video', $data);
+                break;
+
+            case "audio":
+                $data['url'] = $filelistModel->GetFileDownloadUrl($path, false);
+                echo view('Pages/show/audio', $data);
+                break;
+
+            case "code":
+
+                echo view('Pages/show/code', $data);
+                break;
+
+            default:
+                $this->DownloadFile($path);
+                break;
+
+        }
 
         echo view('Templates/Footer');
     }
@@ -76,8 +119,7 @@ class Files extends BaseController {
     public function DownloadFile($path)
     {
         $filelistModel = new filelistModel();
-        $site_infoModel = new site_infoModel();
-        $site_info = $site_infoModel->GetSiteInfo(1);  
+        $site_info = site_infoModel::GetSiteInfo(1);
         $path = $site_info['onedrive_root'].$path;  // 如 /GTA5 则是 /Games/GTA5
 
         $downloadUrl = $filelistModel->GetFileDownloadUrl($path);

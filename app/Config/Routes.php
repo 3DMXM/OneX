@@ -26,7 +26,7 @@ $routes->setDefaultController('Files/view');
 // 后台管理
 $routes->group('~admin', function($routes)
 {
-//    $routes->add("index", "Admin::index");
+    $routes->add("/", "Admin::index");
     // /~admin/login
     $routes->add("login","Admin::login");
 

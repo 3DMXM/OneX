@@ -5,6 +5,7 @@ use App\ThirdParty\onedrive;
 use App\ThirdParty\oneindex;
 use App\ThirdParty\fetch;
 use CodeIgniter\I18n\Time;
+use CodeIgniter\Model;
 
 class filelistModel extends \CodeIgniter\Model
 {
@@ -133,8 +134,9 @@ class filelistModel extends \CodeIgniter\Model
                 'file_name' => $val['name'],
                 'file_type' => $val['type'],
                 'file_size' => $val['size'],
+                'file_path' => $path.$val['name'],
                 'file_time' => $val['lastModifiedDateTime'],
-                // 'file_up_time' => date('Y-m-d H:i:s',time())
+                'file_downloadUrl' => $val['downloadUrl'],
                 'file_up_time' => $time->toLocalizedString()
             );
             $this->AddFileData($data);
@@ -161,7 +163,9 @@ class filelistModel extends \CodeIgniter\Model
                 'file_name' => $val['name'],
                 'file_type' => $val['type'],
                 'file_size' => $val['size'],
+                'file_path' => $file_parent.$val['name'],
                 'file_time' => $val['lastModifiedDateTime'],
+                'file_downloadUrl' => $val['downloadUrl'],
                 'file_up_time' => new Time('now','Asia/Shanghai'),
             );
             $this->AddFileData($data);
@@ -243,10 +247,23 @@ class filelistModel extends \CodeIgniter\Model
     }
 
     // 获取文件下载地址
-    public function GetFileDownloadUrl($file){
+    public function GetFileDownloadUrl($file, $isroot = true){
         // 虽然有缓存下载地址
         // 但通过下载地址下载文件也会调用API
         // 导致依然会出现调用频繁的问题
+
+        if (!$isroot){
+            $site_info = site_infoModel::GetSiteInfo(1);
+            $file = $site_info['onedrive_root'].$file;  // 如 /GTA5 则是 /Games/GTA5
+        }
+
+        $fileData = $this->asArray()->where(['file_path' => $file])->first();
+        if (!empty($fileData['file_downloadUrl'])){
+            // 优先获取 filelist 里面的下载地址
+            return  $fileData['file_downloadUrl'];
+        }
+
+
         $downloadurlModel = new downloadurlModel();
         $fileData = $downloadurlModel->GetDataForPath($file);
 
@@ -297,8 +314,7 @@ class filelistModel extends \CodeIgniter\Model
             return true;
         }
 
-        $site_infoModel = new site_infoModel();
-        $site_info = $site_infoModel->GetSiteInfo(1);  
+        $site_info = site_infoModel::GetSiteInfo(1);
         $path = $site_info['onedrive_root'].$path;  // 如 /GTA5 则是 /Games/GTA5
 
         $name = substr(strrchr($path, '/'), 1);         // 文件或文件夹名
@@ -312,14 +328,16 @@ class filelistModel extends \CodeIgniter\Model
         if(empty($data)){
             // 如果为空 返回404
             // http_response_code(404);
-            return true;
+            return 'folder';
         }
 
-        if($data['file_type'] != "folder"){
-            return false;
-        }else{
-            return true;
-        }
+        return site_infoModel::GetFileType($data['file_type']);
+
+//        if($data['file_type'] != "folder"){
+//            return false;
+//        }else{
+//            return true;
+//        }
     }
 
     // 检查是否过期
@@ -344,6 +362,9 @@ class filelistModel extends \CodeIgniter\Model
 
     // 获取缓存目录列表
     public function CacheList($parent){
+        $site_infoModel = new site_infoModel();
+        $site_info = $site_infoModel->GetSiteInfo(1);
+        $parent = $site_info['onedrive_root'].$parent;  // 如 /GTA5 则是 /Games/GTA5
         // file_parent
         $newList = onedrive::dir($parent);
 

@@ -51,7 +51,6 @@ class Admin extends BaseController{
                     );
                     if(!empty($password)){
                         $password = MD5(MD5($password));
-
                         $nowUser = userModel::CheckingLogin();
                         userModel::UpUserPassword($nowUser['id'], $password);
 
@@ -68,6 +67,7 @@ class Admin extends BaseController{
                 $filelistModel = new filelistModel();
                 $parent = $this->request->getPost("cache_path");
                 if(!empty($parent)){
+                    $parent .= '/';
                     // 如果目录不为空
                     // 更新指定目录的缓存                   
                     $CacheType = $filelistModel->CacheList($parent);
@@ -77,7 +77,27 @@ class Admin extends BaseController{
                         $data['msg'] = "缓存更新失败";
                     }
                 }
+                break;
+            case 'show':
+                // 显示设置
 
+                $updata = array(
+                    'show_image' => $this->request->getPost('show_image'),
+                    'show_video' => $this->request->getPost('show_video'),
+                    'show_audio' => $this->request->getPost('show_audio'),
+                    'show_code' => $this->request->getPost('show_code'),
+                    'show_code2' => $this->request->getPost('show_code2'),
+                    'show_doc' => $this->request->getPost('show_doc'),
+                );
+                if (!empty($updata['show_image'])){
+                    // 如果不为空
+                    // 更新数据
+                    $site_infoModel->SetSiteInfo(1,$updata);
+                    $data['msg'] = "保存成功";
+                }
+
+
+                $data['site_info'] = $site_infoModel->GetSiteInfo(1);
 
                 break;
             case 'SEO':
@@ -99,7 +119,7 @@ class Admin extends BaseController{
     public function login(){
         if(!empty(userModel::CheckingLogin())){
             // 如果已登录，直接跳转到后台
-            header('Location: /~admin/index');
+            header('Location: /~admin');
         }
 
         $username = $this->request->getPost("username");
