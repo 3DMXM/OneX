@@ -1,6 +1,6 @@
 # OneX
 
-演示地址：https://game.aoe.top/
+演示地址：https://onex.aoe.top
 
 该项目是基于oneindex使用CodeIgniter4 进行开发
 

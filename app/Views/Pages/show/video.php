@@ -8,6 +8,7 @@
 <script>
     const dp = new DPlayer({
         container: document.getElementById('dplayer'),
+        volume: 0.3,
         video: {
             url: '<?=$url ?>',
             type: 'auto',

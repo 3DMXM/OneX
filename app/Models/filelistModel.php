@@ -187,13 +187,15 @@ class filelistModel extends \CodeIgniter\Model
         $file_dataModel = new file_dataModel();
 
         $path = "";
+        $isMd = false;
         if (!empty($file['file_parent'])){
-            // 如果传递的是文件数组
-            $path = $file['file_parent'].$file['file_name'];
             // 判断文件是否大于10MB
             if($file['file_size'] > 10485760){
                 return false;
             }
+            $isMd = true;
+            // 如果传递的是文件数组
+            $path = $file['file_parent'].$file['file_name'];
         }else{
             $path = $file;
         }
@@ -205,7 +207,7 @@ class filelistModel extends \CodeIgniter\Model
             if($this->CheckingTime($SqlData['file_time'])){
                 // 如果数据已过期
                 // 重新获取
-                $DownloadUrl = $this->GetFileDownloadUrl($path, false);
+                $DownloadUrl = $this->GetFileDownloadUrl($path, $isMd);
                 $resp = fetch::get($DownloadUrl);
                 if($resp->http_code == 200){
                     // 如果获取成功 更新数据库
@@ -227,7 +229,7 @@ class filelistModel extends \CodeIgniter\Model
             $content = $SqlData['file_data'];
             return $content;
         }else{
-            $DownloadUrl = $this->GetFileDownloadUrl($path, false);
+            $DownloadUrl = $this->GetFileDownloadUrl($path, $isMd);
             $resp = fetch::get($DownloadUrl);
             if($resp->http_code == 200){
                 $content = $resp->content;

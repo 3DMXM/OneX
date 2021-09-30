@@ -2,7 +2,9 @@
 
 <div class="mdui-container-fluid">
     <div class="nexmoe-item">
-        <pre class="prettyprint isEdit" id="code"><?=$content ?></pre>
+        <div class="mdui-typo">
+            <pre class="prettyprint isEdit" id="code"><?=$content ?></pre>
+        </div>
     </div>
 </div>
 <script src="https://code.aoe.top/libs/code-prettify/loader/run_prettify.js"></script>
