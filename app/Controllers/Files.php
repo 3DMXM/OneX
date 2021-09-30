@@ -78,9 +78,17 @@ class Files extends BaseController {
             'audio' => $audio,
         ];
 
-        echo view('Templates/Header', $data);
 
         $path = substr($path, 0, -1);
+        if ($type == "code2"){
+            $data['ext'] = substr(strrchr($path, '.'), 1);
+            $data['content'] = $filelistModel->GetFileContent($path);
+            echo view('Pages/show/code2', $data);
+
+            return;
+        }
+
+        echo view('Templates/Header', $data);
         switch ($type){
             case "folder": echo view('Pages/list', $data); break;
             case "image":
@@ -98,12 +106,18 @@ class Files extends BaseController {
 
             case "audio":
                 $data['url'] = $filelistModel->GetFileDownloadUrl($path, false);
+//                $data['thumb'] = onedrive::thumbnail($site_info['onedrive_root'].$path);
                 echo view('Pages/show/audio', $data);
                 break;
 
             case "code":
-
+                $data['content'] = $filelistModel->GetFileContent($path);
                 echo view('Pages/show/code', $data);
+                break;
+
+            case "doc":
+                $data['downloadUrl'] = $filelistModel->GetFileDownloadUrl($path, false);
+                echo view('Pages/show/doc', $data);
                 break;
 
             default:

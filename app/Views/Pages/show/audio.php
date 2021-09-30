@@ -9,10 +9,12 @@
 <script>
     const ap = new APlayer({
         container: document.getElementById('aplayer'),
+        volume: 0.3,
         audio: [
             {
                 name: '<?=end($navs) ?>',
                 url: '<?=$url ?>',
+                cover: 'https://c.jun6.net/audio.png'
             }
         ]
     });

@@ -16,7 +16,7 @@ class downloadurlModel extends \CodeIgniter\Model
     }
 
     // 添加下载地址
-    public function AddData($data = array())
+    static function AddData($data = array())
     {
         $db = db_connect();
         $builder = $db->table('downloadurl');
@@ -25,7 +25,7 @@ class downloadurlModel extends \CodeIgniter\Model
     }
 
     // 更新下载地址
-    public function SetData($path = "", $data = array())
+    static function SetData($path = "", $data = array())
     {
         $db = db_connect();
         $builder = $db->table('downloadurl');

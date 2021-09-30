@@ -1,5 +1,5 @@
-﻿# Host: localhost  (Version: 5.6.50-log)
-# Date: 2021-09-28 17:18:35
+﻿# Host: admin.com  (Version: 5.6.50-log)
+# Date: 2021-09-30 16:25:24
 # Generator: MySQL-Front 5.3  (Build 4.234)
 
 /*!40101 SET NAMES utf8 */;
@@ -15,7 +15,7 @@ CREATE TABLE `downloadurl` (
   `file_up_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `file_path` (`file_path`(333))
-) ENGINE=MyISAM AUTO_INCREMENT=290 DEFAULT CHARSET=utf8 COMMENT='下载地址缓存';
+) ENGINE=MyISAM AUTO_INCREMENT=304 DEFAULT CHARSET=utf8 COMMENT='下载地址缓存';
 
 #
 # Structure for table "file_data"
@@ -23,16 +23,13 @@ CREATE TABLE `downloadurl` (
 
 CREATE TABLE `file_data` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `file_name` varchar(255) DEFAULT NULL COMMENT '文件名称',
   `file_path` varchar(500) DEFAULT NULL COMMENT '文件路径',
-  `file_type` varchar(255) DEFAULT NULL COMMENT '文件类型',
   `file_data` longtext COMMENT '文件内容',
   `file_time` datetime DEFAULT NULL COMMENT '更新时间',
   `file_download_url` longtext COMMENT '文件下载地址',
   PRIMARY KEY (`id`),
-  KEY `file_name` (`file_name`),
   KEY `file_path` (`file_path`(333))
-) ENGINE=MyISAM AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='文件内容缓存';
+) ENGINE=MyISAM AUTO_INCREMENT=26 DEFAULT CHARSET=utf8 COMMENT='文件内容缓存';
 
 #
 # Structure for table "filelist"
@@ -43,7 +40,7 @@ CREATE TABLE `filelist` (
   `file_parent` varchar(255) DEFAULT NULL COMMENT '父级目录',
   `file_name` varchar(255) DEFAULT NULL COMMENT '文件、文件名',
   `file_type` varchar(255) DEFAULT NULL COMMENT '文件类型 文件夹、文件、文本 等',
-  `file_title` varchar(255) DEFAULT NULL COMMENT '自定义文件夹标题',
+  `file_path` varchar(255) DEFAULT NULL COMMENT '文件完整路径',
   `file_downloadUrl` longtext COMMENT '文件下载地址',
   `file_size` varchar(255) DEFAULT NULL COMMENT '文件大小',
   `file_time` varchar(255) DEFAULT NULL COMMENT '文件更新时间',
@@ -52,7 +49,7 @@ CREATE TABLE `filelist` (
   PRIMARY KEY (`id`),
   KEY `file_name` (`file_name`),
   KEY `file_parent` (`file_parent`)
-) ENGINE=MyISAM AUTO_INCREMENT=64372 DEFAULT CHARSET=utf8 COMMENT='文件列表';
+) ENGINE=MyISAM AUTO_INCREMENT=64586 DEFAULT CHARSET=utf8 COMMENT='文件列表';
 
 #
 # Structure for table "seo"
@@ -68,7 +65,7 @@ CREATE TABLE `seo` (
   `seo_time` datetime DEFAULT NULL COMMENT '更新时间',
   PRIMARY KEY (`id`),
   KEY `seo_parent` (`seo_parent`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 #
 # Structure for table "site_info"
@@ -77,9 +74,14 @@ CREATE TABLE `seo` (
 CREATE TABLE `site_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `site_name` varchar(255) DEFAULT NULL COMMENT '网站名称',
-  `password` varchar(500) DEFAULT NULL COMMENT '后台密码',
   `onedrive_root` varchar(255) DEFAULT NULL COMMENT '起始目录',
   `cache_expire_time` int(11) DEFAULT NULL COMMENT '缓存时间',
+  `show_image` varchar(500) DEFAULT NULL COMMENT '解析图片',
+  `show_video` varchar(500) DEFAULT NULL COMMENT '解析视频',
+  `show_audio` varchar(500) DEFAULT NULL COMMENT '解析音频',
+  `show_code` varchar(500) DEFAULT NULL COMMENT '解析代码',
+  `show_code2` varchar(500) DEFAULT NULL COMMENT '解析为在线代码',
+  `show_doc` varchar(500) DEFAULT NULL COMMENT '解析文档',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='网站数据';
 

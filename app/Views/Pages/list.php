@@ -163,6 +163,7 @@ function get_absolute_path($path) {
                 {
                     name: '<?=$val['file_name']?>',
                     url: '<?=$val['file_downloadUrl'] ?>',
+                    cover: 'https://c.jun6.net/audio.png'
                 },
                 <?php endforeach; ?>
             ]

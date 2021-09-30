@@ -183,36 +183,40 @@ class filelistModel extends \CodeIgniter\Model
 
     // 获取文件内容
     public function GetFileContent($file){
-        // 判断文件是否大于10MB
-        if($file['file_size'] > 10485760){
-            return false;        
-        }
 
         $file_dataModel = new file_dataModel();
 
-        $path = $file['file_parent'];
-        $name = $file['file_name'];
+        $path = "";
+        if (!empty($file['file_parent'])){
+            // 如果传递的是文件数组
+            $path = $file['file_parent'].$file['file_name'];
+            // 判断文件是否大于10MB
+            if($file['file_size'] > 10485760){
+                return false;
+            }
+        }else{
+            $path = $file;
+        }
 
-        $SqlData = $file_dataModel->GetFileDataForPath($path, $name);
+        $SqlData = $file_dataModel->GetFileDataForPath($path);
 
         if(!empty($SqlData)){
             // 如果数据库中存在
             if($this->CheckingTime($SqlData['file_time'])){
                 // 如果数据已过期
                 // 重新获取
-                $DownloadUrl = $this->GetFileDownloadUrl($path.$name);
+                $DownloadUrl = $this->GetFileDownloadUrl($path, false);
                 $resp = fetch::get($DownloadUrl);
                 if($resp->http_code == 200){
                     // 如果获取成功 更新数据库
                     $content = $resp->content;
                     if($content != ""){
                         $data = array(
-                            'file_type' => "md",
                             'file_data' => $content,
                             'file_time' =>  new Time('now','Asia/Shanghai'),
                             'file_download_url' => $DownloadUrl
                         );
-                        $file_dataModel->SetFileData($path, $name, $data);
+                        $file_dataModel->SetFileData($path, $data);
                     }
                     return $content;
                 }else{
@@ -223,15 +227,13 @@ class filelistModel extends \CodeIgniter\Model
             $content = $SqlData['file_data'];
             return $content;
         }else{
-            $DownloadUrl = $this->GetFileDownloadUrl($path.$name);
+            $DownloadUrl = $this->GetFileDownloadUrl($path, false);
             $resp = fetch::get($DownloadUrl);
             if($resp->http_code == 200){
                 $content = $resp->content;
                 if($content != ""){
                     $data = array(
-                        'file_name' => $name,
                         'file_path' => $path,
-                        'file_type' => "md",
                         'file_data' => $content,
                         'file_time' =>  new Time('now','Asia/Shanghai'),
                         'file_download_url' => $DownloadUrl
@@ -260,6 +262,26 @@ class filelistModel extends \CodeIgniter\Model
         $fileData = $this->asArray()->where(['file_path' => $file])->first();
         if (!empty($fileData['file_downloadUrl'])){
             // 优先获取 filelist 里面的下载地址
+            if ($this->CheckingTime($fileData['file_up_time'])){
+                // 如果缓存过期，重新获取
+                // 注：OneDrive的下载地址过期时间为1小时，
+                $downloadUrl = oneindex::download_url($file);
+                if(!empty($downloadUrl)){
+                    // 如果获取成功
+                    $data = array(
+                        'file_download_url' => $downloadUrl,
+                        'file_up_time' => new Time('now','Asia/Shanghai')
+                    );
+                    downloadurlModel::SetData($file, $data);
+
+                    return $downloadUrl;
+                }else{
+                    // 如果获取失败
+                    // 返回旧的地址
+                    return $fileData['file_downloadUrl'];
+                }
+            }
+            // 没有则返回最新的
             return  $fileData['file_downloadUrl'];
         }
 
@@ -279,7 +301,7 @@ class filelistModel extends \CodeIgniter\Model
                         'file_download_url' => $downloadUrl,
                         'file_up_time' => new Time('now','Asia/Shanghai')
                     );
-                    $downloadurlModel->SetData($file, $data);
+                    downloadurlModel::SetData($file, $data);
                    
                     return $downloadUrl;
                 }else{
@@ -291,8 +313,6 @@ class filelistModel extends \CodeIgniter\Model
             // 如果没过期 则直接返回缓存
             return $fileData['file_download_url'];
         }
-
-
         
         $downloadUrl = oneindex::download_url($file);
         if(!empty($downloadUrl)){
