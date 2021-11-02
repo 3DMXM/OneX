@@ -2,6 +2,7 @@
 namespace App\Controllers;
 use App\Models\filelistModel;
 use App\Models\seoModel;
+use App\Models\short_chainModel;
 use App\Models\tokenModel;
 use App\Models\site_infoModel;
 use App\Models\userModel;
@@ -104,6 +105,12 @@ class Admin extends BaseController{
                 // 路径SEO
                 $seoModel = new seoModel();
                 $data['list'] = $seoModel->GetSEO();
+
+                break;
+
+            case 'ShortChain':
+                // 短链
+                $data['list'] = short_chainModel::GetSCUrl(false);
 
                 break;
         }

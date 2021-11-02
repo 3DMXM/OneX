@@ -18,6 +18,10 @@
             <i class="mdui-list-item-icon mdui-icon material-icons">grain</i>
             <div class="mdui-list-item-content">路径SEO设置</div>
         </a>
+        <a class="mdui-list-item" href="/~admin/ShortChain">
+            <i class="mdui-list-item-icon mdui-icon material-icons">grain</i>
+            <div class="mdui-list-item-content">短链设置</div>
+        </a>
 
 <!--            <a class="mdui-list-item" href="/~admin/"></a>-->
     </div>

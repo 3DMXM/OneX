@@ -3,8 +3,7 @@
         <h1>页面SEO设置</h1>
         <hr/>
         <button class="mdui-btn mdui-color-theme-accent mdui-ripple"
-                mdui-dialog="{target: '#add-seo'}"
-        >添加新页面</button>
+                mdui-dialog="{target: '#add-seo'}">添加新页面</button>
         <hr/>
 
         <div class="mdui-dialog" id="add-seo">

@@ -84,7 +84,6 @@ class Files extends BaseController {
             $data['ext'] = substr(strrchr($path, '.'), 1);
             $data['content'] = $filelistModel->GetFileContent($path);
             echo view('Pages/show/code2', $data);
-
             return;
         }
 

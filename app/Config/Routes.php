@@ -22,6 +22,12 @@ $routes->setDefaultMethod('index');
 
 $routes->setDefaultController('Files/view');
 
+// 安装程序
+$routes->group("~install",function ($routes){
+    $routes->add("/", "install::index");
+
+});
+
 
 // 后台管理
 $routes->group('~admin', function($routes)
@@ -31,10 +37,6 @@ $routes->group('~admin', function($routes)
     $routes->add("login","Admin::login");
 
     $routes->add("Files/ShowFileList", "Files::ShowFileList");
-    
-//    $routes->group("/Api",function($routes){
-//        $routes->add("GetAllFile","Api::GetAllFile");
-//    });
 
     $routes->group("/SEO",function ($routes){
         $routes->add("/AddSEO", "SEO::AddSEO");
@@ -46,6 +48,12 @@ $routes->group('~admin', function($routes)
 $routes->add('/Api/GetAllFile','Api::GetAllFile');
 $routes->add('/~SEO/AddSEO','SEO::AddSEO');
 $routes->add('/~SEO/GetSEO','SEO::GetSEO');
+
+// 短链
+$routes->add("/~SCUrl/AddSCUrl","SCUrl::AddSCUrl");
+$routes->add("/~SCUrl/GetStr","SCUrl::GetStr");
+
+$routes->add('/s/(:any)','SCUrl::index/$1');
 
 
 $routes->add('/(:any)', 'Files::view');

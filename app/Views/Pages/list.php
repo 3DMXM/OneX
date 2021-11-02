@@ -158,6 +158,7 @@ function get_absolute_path($path) {
     <script>
         const ap = new APlayer({
             container: document.getElementById('aplayer'),
+            volume: 0.3,
             audio: [
                 <?php foreach ($audio as $val): ?>
                 {
